@@ -14,9 +14,9 @@ Se recomienda trabajar dentro de un entorno virtual para aislar dependencias.
 Crear y activar un entorno virtual:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate      # Windows
+python3 -m venv env
+source env/bin/activate   # Mac/Linux
+env\Scripts\activate      # Windows
 ```
 
 ---
@@ -34,11 +34,9 @@ El volumen definido en el `docker-compose.yml` asegura que los datos de Postgres
 
 ## ⚠️ Nota sobre terminales para ejecución de comandos bash:
 
-***Terminal 1*** → Levantar Docker
+***Terminal 1*** (opcional) → Levantar Docker y validar datos en Postgres
 
-***Terminal 2*** (opcional) → Validar datos en Postgres
-
-***Terminal 3*** → Comandos dbt
+***Terminal 2*** → Comandos dbt
 
 ---
 
@@ -76,7 +74,7 @@ Correr el notebook para cargar los archivos .parquet: `notebooks/prework_parquet
 
 Si se desea se puede ingresar al contenedor de Postgres para ir validando la creación de las tablas:
 ```bash
-## Terminal 2
+## Terminal 1
 docker exec -it pg-dbt psql -U admin -d technical_challenge
 ```
 
@@ -84,7 +82,7 @@ docker exec -it pg-dbt psql -U admin -d technical_challenge
 
 Comprobar que las tablas del esquema raw se generaron correctamente:
 ```bash 
-## Terminal 2
+## Terminal 1
 \dt public_raw.*
 ```
 
@@ -92,7 +90,7 @@ Comprobar que las tablas del esquema raw se generaron correctamente:
 
 Ejecutar los comandos de dbt solicitados:
 ```bash
-## Terminal 3
+## Terminal 2
 dbt seed
 dbt snapshot
 dbt run
@@ -103,7 +101,7 @@ dbt docs serve
 
 También se puede ir validando la creación de modelos con:
 ```bash 
-## Terminal 2
+## Terminal 1
 \dt public_schema.*
 ```
 
