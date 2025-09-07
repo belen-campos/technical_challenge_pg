@@ -78,6 +78,8 @@ Si se desea se puede ingresar al contenedor de Postgres para ir validando la cre
 docker exec -it pg-dbt psql -U admin -d technical_challenge
 ```
 
+Para salir CTRL+D
+
 ### 6. Validar tablas cargadas
 
 Comprobar que las tablas del esquema raw se generaron correctamente:
@@ -105,6 +107,11 @@ También se puede ir validando la creación de modelos con:
 \dt public_schema.*
 ```
 
+### 8. Frenar el contenedor de docker
+```bash
+##  Terminal 1
+docker-compose stop
+```
 ---
 
 ## 📄 Archivo profiles.yml
