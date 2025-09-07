@@ -1,0 +1,10 @@
+snapshots:
+  - name: products_snapshot
+    relation: source('raw', 'raw_products')
+    config:
+      schema: bronze
+      alias: bronze_products_snapshot
+      strategy: timestamp
+      unique_key: id
+      updated_at: updated_at
+      hard_deletes: new_record

@@ -1,0 +1,171 @@
+version: 2
+
+models:
+  - name: bronze_orders
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: created_at
+        tests:
+          - not_future_date
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('bronze_users')
+              field: id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('bronze_products')
+              field: id
+
+  - name: bronze_reviews
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: created_at
+        tests:
+          - not_future_date
+      - name: reviewer
+        tests:
+          - not_null
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('bronze_products_snapshot')
+              field: id
+      - name: rating
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+
+  - name: bronze_users
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - not_null
+          - unique
+
+  - name: silver_orders
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_users')
+              field: id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_products')
+              field: id
+      - name: quantity
+        tests:
+          - not_null
+      - name: unit_price
+        tests:
+          - not_null
+
+  - name: silver_products
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: ean
+        tests:
+          - unique
+          - not_null
+      - name: category_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('products_categories')
+              field: category_id
+
+  - name: silver_reviews
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: reviewer
+        tests:
+          - not_null
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_products')
+              field: id
+      - name: rating
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+
+  - name: silver_users
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: email
+        tests:
+          - not_null
+          - unique
+  
+  - name: gold_avg_rating_daily
+    columns:
+      - name: date_id
+        tests:
+          - not_null
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_products')
+              field: id
+      - name: category_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('products_categories')
+              field: category_id
+      - name: avg_rating
+        tests:
+          - max_value_valid:
+              max_value: 5
+
+  - name: gold_sales_daily
+    columns:
+      - name: date_id
+        tests:
+          - not_null
+
+  - name: gold_user_profile
+    columns:
+        - name: user_id
+          tests:
+            - not_null
+            - unique
+            - relationships:
+                to: ref('silver_users')
+                field: id

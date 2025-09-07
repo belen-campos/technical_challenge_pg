@@ -1,0 +1,6 @@
+version: 2
+
+seeds:
+  - name: products_categories
+    config:
+      alias: raw_products_categories
